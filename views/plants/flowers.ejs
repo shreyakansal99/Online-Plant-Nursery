@@ -1,0 +1,23 @@
+<% layout("layouts/boilerplate") %>
+
+<h3>Flowers</h3>
+
+<div class="container">
+    <h3>Available Flowers</h3>
+    <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+        <% for (let product of flowerPlants) { %>
+            <a href="/home/<%= product._id %>" class="product-link">
+                <div class="card col product-card">
+                    <img src="<%= product.image.url %>" class="card-img-top" alt="<%= product.name %>">
+                    <div class="card-img-overlay"></div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b><%= product.name %></b> <br>
+                            <span>Price: $<%= product.price.toFixed(2) %></span>
+                        </p>                        
+                    </div>
+                </div>
+            </a>
+        <% } %>
+    </div>
+</div>

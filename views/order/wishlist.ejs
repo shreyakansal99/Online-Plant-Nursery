@@ -1,0 +1,29 @@
+<% layout("layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-8 offset-3">
+        <h3>Your Wishlist</h3>
+    </div>
+    <div class="col-6 offset-3">
+        <% if (allWishlist.length > 0) { %>
+            <% allWishlist.forEach(item => { %>
+                <div class="card col-12 show-card product-card">
+                    <img src="<%= item.productid.image.url %>" class="card-img-top show-img" alt="<%= item.productid.name %>">
+                    <div class="card-body">
+                        <h5 class="card-title"><%= item.productid.name %></h5>
+                        <p class="card-text">
+                            Price: $<%= item.productid.price.toFixed(2) %>
+                        </p>
+                        <form method="POST" action="/wishlist/remove/<%= item._id %>?_method=DELETE">
+                            <button class="btn edit-btn">Remove from Wishlist</button>
+                        </form>
+                        <form method="POST" action="/cart/<%= item.productid._id %>/add">
+                            <button class="btn btn-dark">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>Your wishlist is empty.</p>
+        <% } %>
+    </div>
+</div>

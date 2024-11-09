@@ -1,0 +1,42 @@
+<% layout("layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+        <br></br>
+        <h3>New Plant: </h3>
+        <form method="POST" action="/home" class="needs-validation" novalidate enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input name="product[name]" placeholder="Plant name" type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea name="product[description]" class="form-control" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Upload Image</label>
+                <input name="product[image]" type="file" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="price" class="form-label">Price</label>
+                    <input name="product[price]" placeholder="100" class="form-control" required>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input name="product[quantity]" placeholder="25" type="number" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select name="product[category]" class="form-control" required>
+                    <option value="">Select a category</option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%= category._id %>"><%= category.categoryname %></option>
+                    <% }); %>
+                </select>
+            </div>            
+            <button class="btn btn-dark add-btn mt-3">Add</button>
+            <br><br>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,39 @@
+<% layout("layouts/boilerplate") %>
+<div class="row mt-3">
+    <div class="col-8 offset-2">
+        <br></br>
+        <h3>Create your profile: </h3>
+        <form method="POST" action="/user/profile" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label for="name" class="form-label">Name</label>
+                <input name="userProfile[name]" placeholder="Full Name" type="text" class="form-control" required>
+                <div class="valid-feedback">Nice name!!</div>
+            </div>
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <textarea name="userProfile[address]" class="form-control" required></textarea>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="city" class="form-label">City</label>
+                    <input name="userProfile[city]" placeholder="New Delhi" class="form-control" required>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="state" class="form-label">State</label>
+                    <input name="userProfile[state]" placeholder="Delhi" type="text" class="form-control" required>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="postalCode" class="form-label">Postal Code</label>
+                <input name="userProfile[postalcode]" placeholder="110002" type="number" class="form-control" required>
+            </div>
+            <div class="mb-3">
+                <label for="phonenumber" class="form-label">Phone Number</label>
+                <input name="userProfile[phonenumber]" placeholder="99xxxxxxxx" type="number" class="form-control" required>
+            </div>
+            <button class="btn btn-dark add-btn mt-3">Submit</button>
+            <br><br>
+        </form>
+    </div>
+</div>
+
