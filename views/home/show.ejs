@@ -10,7 +10,14 @@
             <p class="card-text">
                 <%= product.description %> <br>
                 <span>Price: $<%= product.price.toFixed(2) %></span><br>
-                Quantity left: <%= product.quantity %> <br>
+                <% if(product.quantity === 0){ %>
+                    <span style="color: red;">Out of Stock</span> <br>
+                <% } else if(product.quantity < 10){ %>
+                    <span style="color: red;">Quantity left: <%= product.quantity %></span> <br>
+                <% } else { %>
+                    Quantity left: <%= product.quantity %> <br>
+                <% } %>
+                
             </p>
         </div>
     </div>

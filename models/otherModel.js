@@ -17,16 +17,12 @@ const shoppingCartSchema = new mongoose.Schema({
         ref: 'User',
         required: true,
     },
-    product : [
-        [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Product',
-            required: true,
-        }, {
-            type: Number,
-            required: true,
-        }]
-    ],
+    product : [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Product',
+        required: true,
+    }],
+    quantity : [Number],
     price: Number,
 });
 

@@ -1,9 +1,9 @@
 <% layout("layouts/boilerplate") %>
 <div class="container mt-3">
     <h2>Payment Options</h2>
-    <p>Total Amount: $<%= totalAmount.toFixed(2) %></p>
+    <p>Total Amount: $<%= totalamount.toFixed(2) %></p>
 
-    <form action="/order/payment" method="POST">
+    <form action= "/order/confirmation" method="GET">
         <div class="form-group">
             <label>Select Payment Method:</label>
             <div class="form-check">

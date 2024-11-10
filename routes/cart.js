@@ -14,8 +14,7 @@ router.get('/', wrapAsync(async (req, res) => {
         if(order){
             cart = await ShoppingCart.findOne({ userid: req.user._id, cartstatus: 'Pending' }).populate("product");
         }
-        console.log(cart);
-        res.render('order/cart', { cart, messages: req.flash() }); // Use orderItems here
+        res.render('order/cart', { cart,idx : 0,  messages: req.flash() }); // Use orderItems here
     } 
     catch (error) {
         console.error(error);
@@ -41,36 +40,33 @@ router.post('/:productId/add', async (req, res) => {
         product.quantity -= 1;
         await product.save();
 
-        console.log(product)
-        console.log(product._id)
-
-        let shoppingCartItem = await ShoppingCart.findOne({ userid: userId, cartstatus: "Pending" }).populate("product");
-        console.log(shoppingCartItem)
+        let shoppingCartItem = await ShoppingCart.findOne({ userid: userId, cartstatus: "Pending" });
         if(!shoppingCartItem){
-
-            if (!mongoose.Types.ObjectId.isValid(product._id)) {
-                console.log("noooooooooooooooooo")
-            }
-            
-            // const item = [mongoose.Types.ObjectId(product._id), 1]
-            // const p = [item];
-            // console.log(p)
             shoppingCartItem = new ShoppingCart({
                 cartstatus : "Pending",
                 userid: userId,
-                product: [[new mongoose.Types.ObjectId('672eef0e1e0ddbd9c0adee0d'), 1]],
+                product: [product._id],
+                quantity : 1,
                 price: product.price
             });
-            console.log(shoppingCartItem)
         }else{
-            for(i of shoppingCartItem.product){
-                if(i[0]._id === productId){
-                    i[1] += 1;
-                    shoppingCartItem.price += i[0].price;
+            let idx = 0;
+            let found = false;
+            for(item of shoppingCartItem.product){
+                if(item.equals(product._id)){
+                    found = true;
+                    shoppingCartItem.quantity[idx]++;
+                    shoppingCartItem.price += product.price;
                 }
+                idx++;
+            }
+            if(found === false){
+                shoppingCartItem.product.push(product._id)
+                shoppingCartItem.quantity.push(1);
+                shoppingCartItem.price += product.price;
+
             }
         }
-
         await shoppingCartItem.save();
 
         let order = await Order.findOne({ userid: userId, orderstatus: 'Pending' });
@@ -104,20 +100,145 @@ router.post('/:productId/add', async (req, res) => {
 });
 
 
+router.post('/:productId/inc', async (req, res) => {
+    const productId = req.params.productId;
+    const userId = req.user._id;
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            req.flash('error', 'Product not found.');
+            return res.redirect(`/home/${productId}`);
+        }
+        if (product.quantity <= 0) {
+            req.flash('error', 'Product is out of stock.');
+            return res.redirect(`/home/${productId}`);
+        }
+        product.quantity -= 1;
+        await product.save();
+
+        let shoppingCartItem = await ShoppingCart.findOne({ userid: userId, cartstatus: "Pending" });
+        if(!shoppingCartItem){
+            req.flash('error', 'Product not found.');
+            return res.redirect(`/home/${productId}`);
+        }else{
+            let idx = 0;
+            let found = false;
+            for(item of shoppingCartItem.product){
+                if(item.equals(product._id)){
+                    found = true;
+                    shoppingCartItem.quantity[idx]++;
+                    shoppingCartItem.price += product.price;
+                }
+                idx++;
+            }
+            if(found === false){
+                req.flash('error', 'Product not found.');
+                return res.redirect(`/home/${productId}`);
+            }
+        }
+        await shoppingCartItem.save();
+
+        let order = await Order.findOne({ userid: userId, orderstatus: 'Pending' });
+
+        if (!order) {
+            req.flash('error', 'Product not found.');
+            return res.redirect(`/home/${productId}`);
+        }
+        order.totalamount += product.price;
+        await order.save();
+        res.redirect(`/cart`);
+    } 
+    catch (error) {
+        console.error(error);
+        req.flash('error', 'An error occurred while adding the product to the cart.');
+        res.redirect(`/cart`);
+    }
+});
+
+
+
+router.post('/:productId/dec', async (req, res) => {
+    const productId = req.params.productId;
+    const userId = req.user._id;
+    try {
+        const product = await Product.findById(productId);
+        if (!product) {
+            req.flash('error', 'Product not found.'); ////////////////////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            /////////////////////////////////////////////
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////
+            ////////////////////////////////////////////////////////////
+            return res.redirect(`/home/${productId}`);
+        }
+        if (product.quantity <= 0) {
+            req.flash('error', 'Product is out of stock.');
+            return res.redirect(`/home/${productId}`);
+        }
+        product.quantity += 1;
+        await product.save();
+
+
+        let order = await Order.findOne({ userid: userId, orderstatus: 'Pending' });
+        order.totalamount -= product.price;
+        await order.save();
+
+
+        let shoppingCartItem = await ShoppingCart.findOne({ userid: userId, cartstatus: "Pending" });
+        if(Array.isArray(shoppingCartItem.quantity) && shoppingCartItem.quantity.length === 1 && shoppingCartItem.quantity[0] === 1){
+            const ordid = shoppingCartItem.orderid;
+            console.log(ordid)
+            await ShoppingCart.findByIdAndDelete(shoppingCartItem._id);
+            await Order.findByIdAndDelete(ordid);
+            return res.redirect("/cart")
+        }else{
+            let idx = 0;
+            for(item of shoppingCartItem.product){
+                if(item.equals(product._id)){
+                    shoppingCartItem.quantity[idx]--;
+                    shoppingCartItem.price -= product.price;
+                }
+                idx++;
+            }
+        }
+        await shoppingCartItem.save();
+        res.redirect(`/cart`);
+    } 
+    catch (error) {
+        console.error(error);
+        req.flash('error', 'An error occurred while adding the product to the cart.');
+        res.redirect(`/cart`);
+    }
+});
+
+
 router.get('/order', wrapAsync(async (req, res) => {
     try {
         const userId = req.user._id; 
         const order = await Order.findOne({ userid: userId, orderstatus: 'Pending' });
-        let orderItems = [];
-        let totalAmount = 0;
-        if (order) {
-            orderItems = await OrderItem.find({ orderid: order._id }).populate('productid');
-            totalAmount = order.totalamount;
-        }
-        res.render('order/order', {
-            orderItems: orderItems,
-            totalAmount: totalAmount,
-            messages: req.flash() 
+
+        const cart = await ShoppingCart.findOne({userid : userId, orderid : order._id}).populate("product");
+
+        res.render('order/order', {cart, idx : 0, totalAmount : order.totalamount, messages: req.flash() 
         });
     } 
     catch (error) {

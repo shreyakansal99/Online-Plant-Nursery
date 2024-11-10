@@ -1,20 +1,21 @@
 <% layout("layouts/boilerplate") %>
 <div class="container mt-3">
     <h2>Final Order Details</h2>
-    <% if (orderItems.length > 0) { %>
+    <% if (cart) { %>
         <div class="row">
-            <% orderItems.forEach(item => { %>
+            <% for(item of cart.product){ %>
                 <div class="col-md-4">
                     <div class="card mb-4">
-                        <img src="<%= item.productid.image.url %>" class="card-img-top" alt="<%= item.productid.name %>">
+                        <img src="<%= item.image.url %>" class="card-img-top" alt="<%= item.name %>">
                         <div class="card-body">
-                            <h5 class="card-title"><%= item.productid.name %></h5>
+                            <h5 class="card-title"><%= item.name %></h5>
                             <p class="card-text">Price: $<%= item.price.toFixed(2) %></p>
-                            <p class="card-text">Quantity: <%= item.quantity %></p>
+                            <p class="card-text">Quantity: <%= cart.quantity[idx] %></p>
+                            <% idx ++; %>
                         </div>
                     </div>
                 </div>
-            <% }); %>
+            <% } %>
         </div>
         <div class="total-amount mt-3">
             <h4>Total Amount: $<%= totalAmount.toFixed(2) %></h4>

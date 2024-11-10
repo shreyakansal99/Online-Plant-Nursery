@@ -14,10 +14,6 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'ShoppingCart',
     },
-    orderdate: {
-        type: Date,
-        default: null,
-    },
     totalamount: Number,
     shippingaddress: String,
 });
