@@ -4,10 +4,9 @@
 <% if (products.length > 0) { %>
     <div class="product-list">
         <% products.forEach(product => { %>
-            <div class="product-card">
+            <div>
                 <h3><%= product.name %></h3>
                 <p><%= product.description %></p>
-                <p><%= product.image.url %></p>
                 <span>Price: $<%= product.price.toFixed(2) %></span><br>
                 <a href="/home/<%= product._id %>">View Details</a>
             </div>

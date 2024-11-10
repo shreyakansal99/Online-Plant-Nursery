@@ -193,16 +193,19 @@
 .product-card{
     border: none !important;
     margin-bottom: 2rem;
+    height: 400px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-img-top{
     border-radius: 1rem !important;
     width: 100% !important;
     object-fit: cover !important;
+    height: 250px;
 }
 
 .card-body{
-    padding: 0 !important;
+    padding: 1rem !important;
 }
 
 .card-text p{
@@ -214,6 +217,12 @@
 }
 
 /* Card effect */
+.product-card:hover {
+    transform: scale(1.05); 
+    box-shadow: 0 0 15px 5px rgba(0, 0, 0, 0.5); 
+    border-radius: 1rem;
+}
+
 .card-img-overlay{
     opacity: 0;
 }
@@ -247,6 +256,18 @@
     border: 1px solid black !important;
 }
 
+/* Edit page */
+.edit-image{
+    width: 200px;
+    height: 150px;
+}
+
+/* Wishlist page */
+.wishlist-btns{
+    display: flex;
+    gap: 1rem;
+}
+
 /* Chatbot page */
 #chat-container {
     border: 1px solid #ccc;
@@ -262,4 +283,82 @@
 
 #send-button{
     color: white;
+}
+
+/* Payment page */
+.payment-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background-color: #f8f9fa; 
+    border-radius: 1rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    font-family: sans-serif;
+    color: #333;
+}
+
+.payment-container h2 {
+    font-size: 1.75rem;
+    color: #2d6a4f;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.payment-container p {
+    font-size: 1.25rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-check-label {
+    font-size: 1.1rem;
+    color: #2d6a4f;
+    margin-left: 0.5rem;
+}
+
+.form-check-input {
+    accent-color: #2d6a4f; 
+}
+
+.confirm-payment-btn {
+    background-color: #227e56;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.confirm-payment-btn:hover {
+    background-color: #0f3d29;
+    transform: scale(1.05); 
+}
+
+.confirm-payment-btn:focus,
+.confirm-payment-btn:active {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(34, 126, 86, 0.25);
+}
+
+/* Final Order page */
+.table-header {
+    background-color: #2d6a4f;
+    color: white;
+}
+
+.table-bordered th, .table-bordered td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.total-amount {
+    font-weight: bold;
+    color: #2d6a4f;
+    font-size: 1.25rem;
 }
